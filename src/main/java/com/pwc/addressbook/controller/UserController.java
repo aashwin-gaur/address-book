@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping("addressbook")
-    public ResponseEntity<User> addFriend(HttpServletRequest request, @RequestBody Friend friend) {
+    public ResponseEntity<User> addFriend(HttpServletRequest request, @Valid @RequestBody Friend friend) {
         String userId = request.getHeader("Authorization");
         return ResponseEntity.ok(userService.addFriend(userId, friend));
     }

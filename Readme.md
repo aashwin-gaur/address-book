@@ -22,9 +22,6 @@ complements). For example given:
 - A user's addressbook will not necessarily contain other users.
 - A user's addressbook can be empty
 - A user can not have two friends with the same name
-- Non-Functional Requirements
-    - a contact number can only have a maximum of 10 digits and a minimum of 8
-    - a name can contain a maximum of 64 characters
   
 ###Scope
 - The application will not implement full solution for authentication. i.e. Only authorisation be implemented. (Access to resources given identity rather than identity management.)
@@ -68,9 +65,15 @@ This solution will be implemented using spring-boot.
 ./scripts/run.sh
 ```
 
-##Documetation of APIs
-####Run first
-Then go to [SwaggerDocumentation](http://localhost:8080/swagger-ui.html#/user-controller) 
+###Documetation of APIs
+####Run first with 
+```sh
+./scripts/run.sh
+```
+Then, go to [SwaggerDocumentation](http://localhost:8080/swagger-ui.html#/user-controller) 
 
 
 
+##Reflection
+- DynamoDb as the storage system of choice wasn't ideal, too much time spent troubleshooting. (Chosen however because of the demand in the job description)
+- Would have liked to do exhaustive testing, but ran out of time and decided to finish implementation instead.

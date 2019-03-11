@@ -1,5 +1,6 @@
 package com.pwc.addressbook.service;
 
+import com.pwc.addressbook.exception.ResourceNotFoundException;
 import com.pwc.addressbook.model.Friend;
 import com.pwc.addressbook.model.User;
 import com.pwc.addressbook.repository.UserRepository;
@@ -56,7 +57,7 @@ public class UserService {
     private User getUser(String userId) {
         return userRepository
                 .findById(userId)
-                .orElseThrow(() -> new RuntimeException(String.format("User [%s] could not be found!", userId)));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("User [%s] could not be found!", userId)));
     }
 
     private Set<String> getMutuallyExclusiveItems(Set<String> usersFriends, Set<String> providedNames) {
