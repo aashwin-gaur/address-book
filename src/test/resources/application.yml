@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: integration-test
+
+amazon:
+  dynamodb:
+    endpoint: http://localhost:8100
+
+server:
+  port: 8081
