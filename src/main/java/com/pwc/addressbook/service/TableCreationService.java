@@ -29,35 +29,34 @@ public class TableCreationService {
 
     @PostConstruct
     private void initialise() throws InterruptedException {
-        createTables(User.class);
-        seedData();
+        if (createTable(User.class)) {
+            seedData();
+        }
     }
 
-    private void createTables(Class... tables) throws InterruptedException {
-        for (Class clazz : tables) {
-            String tableName = clazz.getSimpleName();
-            List<KeySchemaElement> keySchema = Arrays
-                    .asList(new KeySchemaElement()
-                            .withAttributeName("id")
-                            .withKeyType(KeyType.HASH));
+    private boolean createTable(Class clazz) throws InterruptedException {
+        String tableName = clazz.getSimpleName();
+        List<KeySchemaElement> keySchema = Arrays
+                .asList(new KeySchemaElement()
+                        .withAttributeName("id")
+                        .withKeyType(KeyType.HASH));
 
-            List<AttributeDefinition> attributeDefinitions = Arrays
-                    .asList(new AttributeDefinition()
-                            .withAttributeName("id")
-                            .withAttributeType(ScalarAttributeType.S));
+        List<AttributeDefinition> attributeDefinitions = Arrays
+                .asList(new AttributeDefinition()
+                        .withAttributeName("id")
+                        .withAttributeType(ScalarAttributeType.S));
 
-            CreateTableRequest request = new CreateTableRequest()
-                    .withTableName(tableName)
-                    .withKeySchema(keySchema)
-                    .withAttributeDefinitions(attributeDefinitions)
-                    .withProvisionedThroughput(new ProvisionedThroughput()
-                            .withReadCapacityUnits(1000L)
-                            .withWriteCapacityUnits(1000L));
+        CreateTableRequest request = new CreateTableRequest()
+                .withTableName(tableName)
+                .withKeySchema(keySchema)
+                .withAttributeDefinitions(attributeDefinitions)
+                .withProvisionedThroughput(new ProvisionedThroughput()
+                        .withReadCapacityUnits(1000L)
+                        .withWriteCapacityUnits(1000L));
 
-            createTableIfNotExists(dynamoDB, request);
-
-            waitUntilActive(dynamoDB, tableName);
-        }
+        boolean created = createTableIfNotExists(dynamoDB, request);
+        waitUntilActive(dynamoDB, tableName);
+        return created;
     }
 
     private void seedData() {
