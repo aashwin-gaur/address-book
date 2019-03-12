@@ -65,6 +65,13 @@ This solution will be implemented using spring-boot.
 ./scripts/run.sh
 ```
 
+### Finish
+The run script also starts a docker container for the dynamodblocal instance.
+To handle this once done: 
+```sh
+./scripts/cleanup.sh
+```
+
 ### Documetation of APIs
 #### Run first with 
 ```sh

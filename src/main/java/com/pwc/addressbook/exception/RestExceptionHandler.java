@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestExceptionHandler
         extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {ResourceNotFoundException.class})
+    @ExceptionHandler(value = {ResourceNotFoundException.class, UnauthorizedException.class})
     public ResponseEntity<Object> handleConflict(
             RuntimeException ex, WebRequest request) {
         //log this message - ex.getMessage();

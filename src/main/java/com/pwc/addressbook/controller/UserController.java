@@ -1,5 +1,6 @@
 package com.pwc.addressbook.controller;
 
+import com.pwc.addressbook.exception.UnauthorizedException;
 import com.pwc.addressbook.model.Friend;
 import com.pwc.addressbook.model.User;
 import com.pwc.addressbook.service.UserService;
@@ -26,26 +27,33 @@ public class UserController {
 
     @PostMapping("addressbook/unique")
     public ResponseEntity<Set<String>> getUniqueFriends(HttpServletRequest request, @RequestBody Set<Friend> setOfNames) {
-        String userId = request.getHeader("Authorization");
+        String userId = getUserIdFromAuthHeader(request);
         return ResponseEntity.ok(userService.getFriendsThatAreNotInListProvided(userId, setOfNames));
     }
 
-
     @GetMapping("addressbook")
     public ResponseEntity<Set<Friend>> getAddressBook(HttpServletRequest request) {
-        String userId = request.getHeader("Authorization");
+        String userId = getUserIdFromAuthHeader(request);
         return ResponseEntity.ok(userService.getAddressBook(userId));
     }
 
     @PostMapping("addressbook")
     public ResponseEntity<User> addFriend(HttpServletRequest request, @Valid @RequestBody Friend friend) {
-        String userId = request.getHeader("Authorization");
+        String userId = getUserIdFromAuthHeader(request);
         return ResponseEntity.ok(userService.addFriend(userId, friend));
     }
 
     @GetMapping("manage/user")
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    private String getUserIdFromAuthHeader(HttpServletRequest request) {
+        String userId = request.getHeader("Authorization");
+        if (userId == null) {
+            throw new UnauthorizedException("No authentication details provided!");
+        }
+        return userId;
     }
 
 }
